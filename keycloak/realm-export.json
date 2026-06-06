@@ -1,0 +1,98 @@
+{
+  "realm": "aurum-vault",
+  "displayName": "Aurum Vault",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": false,
+  "roles": {
+    "realm": [
+      { "name": "customer",       "composite": false },
+      { "name": "admin",          "composite": false },
+      { "name": "ticket_manager", "composite": false }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "aurum-vault-web",
+      "name": "Aurum Vault Web App",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://localhost:3001/*",
+        "http://localhost/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost"
+      ],
+      "fullScopeAllowed": true,
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:3000/*"
+      }
+    },
+    {
+      "clientId": "aurum-vault-api",
+      "name": "Aurum Vault API (service account)",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "aurum-api-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "protocol": "openid-connect",
+      "fullScopeAllowed": false
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-aurum-vault-api",
+      "enabled": true,
+      "serviceAccountClientId": "aurum-vault-api",
+      "clientRoles": {
+        "realm-management": ["manage-users", "view-users", "query-users"]
+      }
+    },
+    {
+      "username": "customer1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Priya",
+      "lastName": "Sharma",
+      "email": "priya.sharma@example.com",
+      "credentials": [{ "type": "password", "value": "vault123", "temporary": false }],
+      "realmRoles": ["customer"]
+    },
+    {
+      "username": "admin1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "admin@aurumvault.com",
+      "credentials": [{ "type": "password", "value": "admin123", "temporary": false }],
+      "realmRoles": ["admin"]
+    },
+    {
+      "username": "appraiser1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Rahul",
+      "lastName": "Verma",
+      "email": "rahul.verma@aurumvault.com",
+      "credentials": [{ "type": "password", "value": "ticket123", "temporary": false }],
+      "realmRoles": ["ticket_manager"]
+    }
+  ]
+}
