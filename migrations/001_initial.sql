@@ -150,3 +150,9 @@ CREATE INDEX IF NOT EXISTS idx_audit_log_created_at ON audit_log(created_at DESC
 INSERT INTO rates (gold, silver, platinum, diamond_usd)
 VALUES (7200.00, 95.00, 3200.00, 12.50)
 ON CONFLICT DO NOTHING;
+
+-- Seed staff (keycloak_id matches realm-export.json)
+INSERT INTO staff (keycloak_id, full_name, email, role, status) VALUES
+  ('6ca74059-868e-4545-9651-acb2748f75de', 'Aurum Admin',    'admin@aurumvault.com',     'admin',          'active'),
+  ('cfa071e8-bbea-4b6f-8741-0173a7651706', 'Aurum Appraiser','appraiser@aurumvault.com', 'ticket_manager', 'active')
+ON CONFLICT (keycloak_id) DO NOTHING;
