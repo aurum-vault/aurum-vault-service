@@ -28,7 +28,7 @@ export const staffRepository = {
   async create(data: CreateStaffInput): Promise<Staff> {
     const [row] = await db
       .insert(staff)
-      .values({ full_name: data.full_name, email: data.email, mobile: data.mobile ?? null, role: data.role })
+      .values({ full_name: data.full_name, email: data.email, mobile: data.mobile ?? null, role: data.role, keycloak_id: data.keycloak_id ?? null })
       .returning()
     return row
   },

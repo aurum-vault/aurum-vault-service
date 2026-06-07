@@ -1281,7 +1281,15 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
-  "smtpServer": {},
+  "smtpServer": {
+    "host": "mailpit",
+    "port": "1025",
+    "from": "noreply@aurumvault.in",
+    "fromDisplayName": "Aurum Vault",
+    "ssl": "false",
+    "starttls": "false",
+    "auth": "false"
+  },
   "eventsEnabled": false,
   "eventsListeners": [
     "jboss-logging"
@@ -1530,7 +1538,7 @@
         {
           "authenticator": "auth-otp-form",
           "authenticatorFlow": false,
-          "requirement": "REQUIRED",
+          "requirement": "DISABLED",
           "priority": 20,
           "autheticatorFlow": false,
           "userSetupAllowed": false
@@ -1880,6 +1888,14 @@
           "autheticatorFlow": true,
           "flowAlias": "Browser - Conditional OTP",
           "userSetupAllowed": false
+        },
+        {
+          "authenticator": "email-otp-form",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 25,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
         }
       ]
     },
@@ -2026,7 +2042,7 @@
       "alias": "CONFIGURE_TOTP",
       "name": "Configure OTP",
       "providerId": "CONFIGURE_TOTP",
-      "enabled": true,
+      "enabled": false,
       "defaultAction": false,
       "priority": 10,
       "config": {}

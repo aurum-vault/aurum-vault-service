@@ -177,6 +177,6 @@ export type UpdateReportInput = Partial<Pick<Report, 'appraised_value' | 'notes'
 export type CreateCustomerInput = Pick<Customer, 'keycloak_id' | 'full_name' | 'mobile' | 'email'> &
   Partial<Pick<Customer, 'address' | 'tfa'>>
 
-export type CreateStaffInput = Pick<Staff, 'full_name' | 'email' | 'role'> & Partial<Pick<Staff, 'mobile'>>
+export type CreateStaffInput = Pick<Staff, 'full_name' | 'email' | 'role'> & Partial<Pick<Staff, 'mobile' | 'keycloak_id'>>
 
 export type UpdateStaffInput = Partial<Pick<Staff, 'full_name' | 'email' | 'mobile' | 'role' | 'status'>>

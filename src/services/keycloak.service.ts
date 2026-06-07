@@ -103,6 +103,50 @@ export const keycloakService = {
     return userId
   },
 
+  async createStaffUser(data: {
+    email:     string
+    firstName: string
+    lastName:  string
+    role:      string
+  }): Promise<string> {
+    const token = await getAdminToken()
+
+    const res = await fetch(`${ADMIN_URL}/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        username:        data.email,
+        email:           data.email,
+        firstName:       data.firstName,
+        lastName:        data.lastName,
+        enabled:         true,
+        emailVerified:   false,
+        requiredActions: ['UPDATE_PASSWORD'],
+      }),
+    })
+
+    if (res.status === 409) throw new AppError(409, 'Email already exists in auth service')
+    if (!res.ok)            throw new AppError(502, 'Failed to create staff user in auth service')
+
+    const location = res.headers.get('Location') ?? ''
+    const userId   = location.split('/').pop()
+    if (!userId)   throw new AppError(502, 'Could not determine new user ID')
+
+    await this.assignRealmRole(userId, data.role, token)
+
+    const emailRes = await fetch(`${ADMIN_URL}/users/${userId}/execute-actions-email`, {
+      method:  'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body:    JSON.stringify(['UPDATE_PASSWORD']),
+    })
+    if (!emailRes.ok) {
+      const detail = await emailRes.text().catch(() => '')
+      throw new AppError(502, `User created but failed to send invite email: ${detail}`)
+    }
+
+    return userId
+  },
+
   async assignRealmRole(userId: string, roleName: string, adminToken?: string): Promise<void> {
     const token = adminToken ?? await getAdminToken()
 
